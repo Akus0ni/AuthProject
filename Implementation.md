@@ -79,3 +79,13 @@ You can customize the project with flags like:
 `dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.5`
 `dotnet add package Swashbuckle.AspNetCore --version 6.5.0`
 `dotnet add package System.IdentityModel.Tokens.Jwt`
+`dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 8.0.5`
+`dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.5`
+`dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.5`
+
+---
+
+### Run Entity Framework Core migration to create tables for User Authentication
+
+`dotnet ef migrations add InitialIdentitySchema`
+`dotnet ef database update`
