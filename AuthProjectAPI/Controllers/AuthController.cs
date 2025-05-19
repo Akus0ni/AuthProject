@@ -12,19 +12,18 @@ public class AuthController : ControllerBase
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly TokenService _tokenService;
 
-    // In-memory refresh token store (for demo)
-    private readonly ApplicationDbContext _context;
+    private readonly IRefreshTokenRepository _refreshTokenRepo;
 
     public AuthController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         TokenService tokenService,
-        ApplicationDbContext context) // inject context
+        IRefreshTokenRepository refreshTokenRepository) // inject context
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
-        _context = context;
+        _refreshTokenRepo = refreshTokenRepository;
     }
 
     [HttpPost("register")]
@@ -90,18 +89,10 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Logout([FromBody] string refreshToken)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (string.IsNullOrEmpty(userId))
+        if (userId == null)
             return Unauthorized("Invalid user.");
 
-        var storedToken = await _context.RefreshTokens
-            .FirstOrDefaultAsync(t => t.Token == refreshToken && t.UserId == userId);
-
-        if (storedToken == null)
-            return NotFound("Refresh token not found or already revoked.");
-
-        _context.RefreshTokens.Remove(storedToken);
-        await _context.SaveChangesAsync();
-
+        await _refreshTokenRepo.RemoveTokenAsync(refreshToken, userId);
         return Ok("Logout successful. Refresh token revoked.");
     }
 }
