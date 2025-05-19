@@ -87,5 +87,6 @@ You can customize the project with flags like:
 
 ### Run Entity Framework Core migration to create tables for User Authentication
 
+Install if not already done: `dotnet tool install --global dotnet-ef `
 `dotnet ef migrations add InitialIdentitySchema`
 `dotnet ef database update`
