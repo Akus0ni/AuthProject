@@ -1,0 +1,67 @@
+# Build and release folders
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# ASP.NET Core / .NET generated files
+wwwroot/dist/
+wwwroot/node_modules/
+wwwroot/lib/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Logs
+*.log
+logs/
+*.tlog
+
+# Secrets / credentials
+secrets.json
+appsettings.*.local.json
+appsettings.Local.json
+*.pfx
+
+# dotnet tooling
+*.vs/
+.vs/
+*.dbmdl
+*.bak
+*.sql
+
+# Coverage results
+coverage/
+TestResults/
+*.coverage
+*.coveragexml
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Others
+node_modules/
+.env
+.env.*
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
