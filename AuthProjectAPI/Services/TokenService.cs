@@ -11,14 +11,14 @@ public class TokenService
     private readonly IConfiguration _configuration;
     private readonly SymmetricSecurityKey _key;
 
-    private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IRefreshTokenRepository _refreshTokenRepo;
 
-    public TokenService(IConfiguration config, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    public TokenService(IConfiguration config, UserManager<ApplicationUser> userManager, IRefreshTokenRepository refreshTokenRepo)
     {
         _configuration = config;
-        _context = context;
         _userManager = userManager;
+        _refreshTokenRepo = refreshTokenRepo;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
     }
 
@@ -60,8 +60,7 @@ public class TokenService
             UserId = user.Id
         };
 
-        _context.RefreshTokens.Add(tokenEntity);
-        await _context.SaveChangesAsync();
+        await _refreshTokenRepo.StoreRefreshTokenAsync(tokenEntity);
 
         return refreshToken;
     }
@@ -103,19 +102,13 @@ public class TokenService
 
         if (user == null) return null;
 
-        var storedToken = await _context.RefreshTokens
-            .FirstOrDefaultAsync(t => t.Token == refreshToken && t.UserId == user.Id && t.ExpiryDate > DateTime.UtcNow);
-
-        return storedToken != null ? user : null;
+        var token = await _refreshTokenRepo.GetValidRefreshTokenAsync(user.Id, refreshToken);
+        return token != null ? user : null;
     }
     
     public async Task RemoveExpiredRefreshTokensAsync(string userId)
     {
-        var expiredTokens = _context.RefreshTokens
-            .Where(t => t.UserId == userId && t.ExpiryDate <= DateTime.UtcNow);
-
-        _context.RefreshTokens.RemoveRange(expiredTokens);
-        await _context.SaveChangesAsync();
+        await _refreshTokenRepo.RemoveExpiredTokensAsync(userId);
     }
 
 }
