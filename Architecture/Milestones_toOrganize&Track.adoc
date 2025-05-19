@@ -1,0 +1,38 @@
+== Milestones
+
+1. **Project Setup and Planning** *(1 day)*
+  - Initialize Git repository.
+  - Setup project folders for backend and frontend.
+  - Define `.env` and configuration templates for secrets.
+
+2. **Database & Backend Foundation** *(2-3 days)*
+  - Design PostgreSQL schema and create initial EF Core models.
+  - Setup `DbContext` and run first migration.
+  - Seed roles (`Admin`, `User`).
+
+3. **Authentication & Authorization API** *(3-4 days)*
+  - Implement JWT auth with local signup/login.
+  - Implement refresh token mechanism.
+  - Build middleware for role-based authorization.
+
+4. **OAuth Integration** *(2 days)*
+  - Configure Google and GitHub OAuth providers.
+  - Implement user creation or lookup on successful OAuth login.
+
+5. **Frontend UI (Login, Signup, Navigation)** *(2-3 days)*
+  - Implement login/signup pages using React + Bootstrap.
+  - Handle local and OAuth flows on frontend.
+  - Implement user state management (JWT handling).
+
+6. **User Management UI (CRUD)** *(3 days)*
+  - Build user table and CRUD forms.
+  - Add conditional rendering for Admin-only actions.
+
+7. **Testing & Security Enhancements** *(2 days)*
+  - Add integration tests for auth flows.
+  - Enable HTTPS, add rate-limiting and CORS handling.
+
+8. **Deployment** *(1 day)*
+  - Deploy to chosen environment (Docker, Azure, AWS).
+  - Setup environment variables, DB migrations, and monitoring.
+

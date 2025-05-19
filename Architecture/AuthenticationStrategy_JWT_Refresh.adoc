@@ -1,0 +1,20 @@
+@startuml
+actor User
+participant "React App" as FE
+participant "Auth Controller" as Auth
+participant "Token Service" as Token
+database "PostgreSQL" as DB
+
+User -> FE : Login (email/password)
+FE -> Auth : /auth/login
+Auth -> DB : Validate credentials
+Auth -> Token : Generate Access + Refresh token
+Token -> DB : Store refresh token
+Token -> FE : Return tokens (access + refresh)
+
+== Later when token expires ==
+
+FE -> Auth : /auth/refresh-token
+Auth -> DB : Validate refresh token
+Token -> FE : New access token
+@enduml

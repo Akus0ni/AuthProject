@@ -1,0 +1,82 @@
+== Method
+
+=== Database Schema (PostgreSQL)
+
+[cols="1,1,1,2", options="header"]
+|===
+|Table
+|Field
+|Type
+|Description
+
+|users
+|id
+|UUID (PK)
+|Unique user ID
+| 
+|email
+|VARCHAR(255)
+|Unique email address
+|
+|password_hash
+|TEXT
+|Hashed password (null for OAuth-only users)
+|
+|full_name
+|VARCHAR(255)
+|Display name
+|
+|auth_provider
+|VARCHAR(50)
+|‘local’, ‘google’, ‘github’, etc.
+|
+|provider_user_id
+|VARCHAR(255)
+|OAuth provider user ID
+|
+|created_at
+|TIMESTAMP
+|When the user was created
+|
+
+|roles
+|id
+|INT (PK)
+|Role ID
+|
+|name
+|VARCHAR(50)
+|'Admin', 'User'
+|
+
+|user_roles
+|user_id
+|UUID (FK)
+|Links to users.id
+|
+|role_id
+|INT (FK)
+|Links to roles.id
+|
+
+|refresh_tokens
+|id
+|UUID (PK)
+|Unique refresh token ID
+|
+|user_id
+|UUID (FK)
+|Links to users.id
+|
+|token
+|TEXT
+|Refresh token string
+|
+|expires_at
+|TIMESTAMP
+|Expiration datetime
+|
+|revoked_at
+|TIMESTAMP
+|If set, token is invalid
+|===

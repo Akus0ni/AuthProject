@@ -1,0 +1,15 @@
+@startuml
+actor User
+participant "React App" as FE
+participant "OAuth Handler" as OAuth
+participant "OAuth Provider" as Provider
+database "PostgreSQL" as DB
+
+User -> FE : Click 'Login with Google'
+FE -> OAuth : Redirect to Provider
+OAuth -> Provider : OAuth Request
+Provider -> OAuth : Callback with token
+OAuth -> Provider : Exchange code for user info
+OAuth -> DB : Create/Find user
+OAuth -> FE : Return JWT + refresh token
+@enduml

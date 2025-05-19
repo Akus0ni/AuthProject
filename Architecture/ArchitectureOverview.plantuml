@@ -1,0 +1,27 @@
+@startuml
+package "Frontend (React)" {
+  [LoginPage]
+  [UserListPage]
+}
+
+package "Backend (.NET API)" {
+  [Auth Controller]
+  [User Controller]
+  [OAuth Handler]
+  [Token Service]
+  [Role Middleware]
+  [PostgreSQL DB]
+}
+
+[LoginPage] --> [Auth Controller] : Login/Register
+[Auth Controller] --> [Token Service] : Issue JWT/Refresh
+[Auth Controller] --> [PostgreSQL DB] : User lookup/create
+
+[LoginPage] --> [OAuth Handler] : OAuth login
+[OAuth Handler] --> [Token Service] : JWT issuance
+[OAuth Handler] --> [PostgreSQL DB] : Lookup/Create user
+
+[UserListPage] --> [User Controller] : GET/POST/PUT/DELETE /users
+[User Controller] --> [Role Middleware] : Verify Admin role
+[User Controller] --> [PostgreSQL DB] : User CRUD
+@enduml
